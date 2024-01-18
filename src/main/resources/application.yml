@@ -1,0 +1,54 @@
+server:
+  port: 8080
+  forward-headers-strategy: framework
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/session?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: tlarbckd@17
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+    show_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+  security:
+    user:
+      password: 1
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+    - /**
+
+cloud:
+    aws:
+      s3:
+        bucket: cow-insta-practice
+      credentials:
+        access-key: AKIAQAZLIF42LFQ4P2XY
+        secret-key: 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
+      region:
+        static: ap-northeast-2
+        auto: false
+      stack:
+        auto: false
