@@ -1,31 +1,30 @@
 package com.instagram.api.user.domain;
 
+import com.fasterxml.uuid.Generators;
 import com.instagram.api.user.state.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
-@Setter
 @Entity
+@Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
-
+    @Column(nullable = false, scale = 20, unique = true)
     private String uid;
-
     private String pw;
-
     private String name;
     private int age;
     private String phoneNumber;
 //    private String fileName;
 //    private String imageUrl;
-
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
 //    @Builder
 //    public User(String uid, String pw, String name, int age, String phoneNumber,

@@ -4,9 +4,8 @@ import com.instagram.api.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUid(String uid);
-
-    Optional<User> findByUidAndPw(String uid, String pw);
+public interface UserRepository extends JpaRepository<User, UUID> {
+    Optional<User> findByUid(String id);
 }

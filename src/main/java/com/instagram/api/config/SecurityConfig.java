@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -25,6 +26,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequest ->
@@ -32,7 +34,8 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
                                         AntPathRequestMatcher.antMatcher("/api-docs/**"),
-                                        AntPathRequestMatcher.antMatcher("/user/**")
+                                        AntPathRequestMatcher.antMatcher("/user/**"),
+                                        AntPathRequestMatcher.antMatcher("/**")
                                 ).permitAll()
                 );
 

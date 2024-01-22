@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String[] split = Optional.ofNullable(token)
                 .filter(subject -> subject.length() >= 10)
                 .map(tokenProvider::validateTokenAndGetSubject)
-                .orElse("annonymous:annonymous")
+                .orElse("anonymous:anonymous")
                 .split(":");
         return new User(split[0], "", List.of(new SimpleGrantedAuthority(split[1])));
     }

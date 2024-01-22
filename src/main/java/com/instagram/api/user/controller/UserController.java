@@ -1,80 +1,51 @@
 package com.instagram.api.user.controller;
 
-import com.instagram.api.user.dto.request.UserLoginRequest;
-import com.instagram.api.user.dto.request.UserRegistRequest;
 import com.instagram.api.user.dto.request.UserUpdateRequest;
-import com.instagram.api.user.dto.response.UserLoginResponse;
 import com.instagram.api.user.dto.response.UserResponse;
 import com.instagram.api.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import com.instagram.api.user.state.UserAuthorize;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/user")
 @RestController
+@UserAuthorize
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    // TODO DTO + MultipartFile은 Swagger에서 확인 불가 -> Postman으로 임시 조치(첫번째 피드백에서 질문 예정)
-//    @PostMapping()
-//    public ResponseEntity<Void> register(@RequestPart UserRegistRequest userRegistRequest,
-//                                         @RequestPart MultipartFile multipartFile) throws IOException {
-//        userService.register(userRegistRequest, multipartFile);
-//        return ResponseEntity.ok().build();
-//    }
-
-    @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody UserRegistRequest userRegistRequest) {
-        userService.register(userRegistRequest);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
-        return ResponseEntity.ok(userService.login(userLoginRequest));
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
-        return ResponseEntity.ok().build();
-    }
 
     @GetMapping("/all")
     public ResponseEntity<List<UserResponse>> retrieveUsers() {
         return ResponseEntity.ok(userService.retrieveUsers());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> retrieveUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.retrieveUserById(id));
+    @GetMapping()
+    public ResponseEntity<UserResponse> retrieveUserByName(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(userService.retrieveUserByName(UUID.fromString(user.getUsername())));
     }
 
-    @PutMapping("")
-    public ResponseEntity<Void> updateUser(@Valid @RequestPart UserUpdateRequest userUpdateRequest,
+    @PutMapping()
+    public ResponseEntity<Void> updateUser(@AuthenticationPrincipal User user,
+                                           @Valid @RequestPart UserUpdateRequest userUpdateRequest,
                                            @RequestPart(required = false) MultipartFile multipartFile) throws IOException {
-        userService.updateUser(userUpdateRequest, multipartFile);
+        userService.updateUser(UUID.fromString(user.getUsername()), userUpdateRequest, multipartFile);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal User user) {
+        userService.deleteUser(UUID.fromString(user.getUsername()));
         return ResponseEntity.ok().build();
     }
-
-
 
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 public class UserUpdateRequest {
 
     @NotNull
-    private Long id;
+    private String pw;
 
     private String name;
 
