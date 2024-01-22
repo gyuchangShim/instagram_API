@@ -1,4 +1,4 @@
-package com.instagram.api.jwt;
+package com.instagram.api.util.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

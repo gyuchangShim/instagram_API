@@ -1,6 +1,6 @@
-package com.instagram.api.config;
+package com.instagram.api.util.config;
 
-import com.instagram.api.jwt.JwtAuthenticationFilter;
+import com.instagram.api.util.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

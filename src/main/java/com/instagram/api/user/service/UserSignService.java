@@ -1,6 +1,6 @@
 package com.instagram.api.user.service;
 
-import com.instagram.api.jwt.TokenProvider;
+import com.instagram.api.util.jwt.TokenProvider;
 import com.instagram.api.user.domain.User;
 import com.instagram.api.user.dto.request.UserLoginRequest;
 import com.instagram.api.user.dto.request.UserRegistRequest;

@@ -1,4 +1,4 @@
-package com.instagram.api.config;
+package com.instagram.api.util.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
