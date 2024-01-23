@@ -47,4 +47,13 @@ public class PostService {
         return postRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시물이 존재하지 않습니다."));
     }
+
+    public List<PostResponse> retrievePostByFollow(UUID id) {
+        User targetUser = userService.checkExist(id);
+        List<User> followingList = targetUser.getFollowing();
+        return postRepository.findAll()
+                .stream().filter(post -> followingList.contains(post.getUser()))
+                .map(PostResponse::from)
+                .collect(Collectors.toList());
+    }
 }

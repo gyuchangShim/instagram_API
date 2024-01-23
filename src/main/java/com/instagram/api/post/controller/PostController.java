@@ -41,5 +41,10 @@ public class PostController {
         return ResponseEntity.ok(postService.retrievePostById(id));
     }
 
+    @GetMapping()
+    public ResponseEntity<List<PostResponse>> retrievePostByFollow(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(postService.retrievePostByFollow(UUID.fromString(user.getUsername())));
+    }
+
 
 }
