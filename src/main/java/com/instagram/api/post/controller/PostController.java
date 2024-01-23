@@ -36,11 +36,6 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PostResponse>> retrieveAllPostByFollow() {
-        return ResponseEntity.ok(postService.retrieveAllPostByFollow());
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> retrievePostById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.retrievePostById(id));

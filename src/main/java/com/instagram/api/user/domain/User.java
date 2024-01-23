@@ -5,6 +5,7 @@ import com.instagram.api.user.state.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -25,6 +26,13 @@ public class User {
     private Role role;
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "followingName")
+    private List<User> following;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "followerName")
+    private List<User> follower;
 
 //    @Builder
 //    public User(String uid, String pw, String name, int age, String phoneNumber,
@@ -64,4 +72,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public void updateFollow(User friend) {
+        this.following.add(friend);
+    }
 }

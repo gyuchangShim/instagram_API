@@ -6,6 +6,7 @@ import com.instagram.api.user.service.UserService;
 import com.instagram.api.user.state.UserAuthorize;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -45,6 +46,18 @@ public class UserController {
     @DeleteMapping()
     public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal User user) {
         userService.deleteUser(UUID.fromString(user.getUsername()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/follow/{name}")
+    public ResponseEntity<Void> follow(@AuthenticationPrincipal User user, @PathVariable String name) {
+        userService.follow(UUID.fromString(user.getUsername()), name);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/follow/{name}")
+    public ResponseEntity<Void> unFollow(@AuthenticationPrincipal User user, @PathVariable String name) {
+        userService.unFollow(UUID.fromString(user.getUsername()), name);
         return ResponseEntity.ok().build();
     }
 

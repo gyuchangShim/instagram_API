@@ -39,12 +39,6 @@ public class PostService {
         postRepository.save(postCreateRequest.toEntity(targetUser));
     }
 
-    public List<PostResponse> retrieveAllPostByFollow() {
-        return postRepository.findAll()
-                .stream().map(PostResponse::from)
-                .collect(Collectors.toList());
-    }
-
     public PostResponse retrievePostById(Long id) {
         return PostResponse.from(checkExist(id));
     }
