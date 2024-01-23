@@ -2,6 +2,7 @@ package com.instagram.api.post.service;
 
 import com.instagram.api.post.domain.Post;
 import com.instagram.api.post.dto.request.PostCreateRequest;
+import com.instagram.api.post.dto.request.PostUpdateRequest;
 import com.instagram.api.post.dto.response.PostResponse;
 import com.instagram.api.post.repository.PostRepository;
 import com.instagram.api.user.domain.User;
@@ -43,11 +44,6 @@ public class PostService {
         return PostResponse.from(checkExist(id));
     }
 
-    public Post checkExist(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 게시물이 존재하지 않습니다."));
-    }
-
     public List<PostResponse> retrievePostByFollow(UUID id) {
         User targetUser = userService.checkExist(id);
         List<User> followingList = targetUser.getFollowing();
@@ -55,5 +51,22 @@ public class PostService {
                 .stream().filter(post -> followingList.contains(post.getUser()))
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updatePost(UUID fromString, PostUpdateRequest postUpdateRequest) {
+        Post targetPost = checkExist(postUpdateRequest.getId());
+        targetPost.updatePost(postUpdateRequest.getContent());
+    }
+
+    public Post checkExist(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 게시물이 존재하지 않습니다."));
+    }
+
+
+    public void deletePost(UUID fromString, Long id) {
+        Post targetPost = checkExist(id);
+        postRepository.delete(targetPost);
     }
 }
