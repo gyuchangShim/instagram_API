@@ -58,7 +58,7 @@ public class UserService {
         userRepository.delete(checkExist(id));
     }
 
-    private User checkExist(UUID id) {
+    public User checkExist(UUID id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 계정입니다."));
     }

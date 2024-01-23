@@ -1,0 +1,53 @@
+package com.instagram.api.post.service;
+
+import com.instagram.api.post.domain.Post;
+import com.instagram.api.post.dto.request.PostCreateRequest;
+import com.instagram.api.post.dto.response.PostResponse;
+import com.instagram.api.post.repository.PostRepository;
+import com.instagram.api.user.domain.User;
+import com.instagram.api.user.service.UserService;
+import com.instagram.api.util.S3UploadService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class PostService {
+
+    private final UserService userService;
+    private final PostRepository postRepository;
+    private final S3UploadService s3UploadService;
+
+    // TODO 이미지 저장 가능
+//    public void createPost(UUID id, PostCreateRequest postCreateRequest) throws IOException {
+//        User targetUser = userService.checkExist(id);
+//        String image = s3UploadService.saveFile(postCreateRequest.getImage());
+//        postRepository.save(postCreateRequest.toEntity(targetUser, image));
+//    }
+
+    public void createPost(UUID id, PostCreateRequest postCreateRequest) {
+        User targetUser = userService.checkExist(id);
+        postRepository.save(postCreateRequest.toEntity(targetUser));
+    }
+
+    public List<PostResponse> retrieveAllPostByFollow() {
+        return postRepository.findAll()
+                .stream().map(PostResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public PostResponse retrievePostById(Long id) {
+        return PostResponse.from(checkExist(id));
+    }
+
+    public Post checkExist(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 게시물이 존재하지 않습니다."));
+    }
+}
