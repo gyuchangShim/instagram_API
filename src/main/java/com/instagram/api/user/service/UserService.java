@@ -63,4 +63,8 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 계정입니다."));
     }
 
+    public User findUser(String name) {
+        return userRepository.findByName(name)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 계정입니다."));
+    }
 }

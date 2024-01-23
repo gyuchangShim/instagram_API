@@ -9,8 +9,8 @@ import com.instagram.api.user.service.UserService;
 import com.instagram.api.util.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostService {
 
     private final UserService userService;
@@ -25,12 +26,14 @@ public class PostService {
     private final S3UploadService s3UploadService;
 
     // TODO 이미지 저장 가능
+//    @Transactional
 //    public void createPost(UUID id, PostCreateRequest postCreateRequest) throws IOException {
 //        User targetUser = userService.checkExist(id);
 //        String image = s3UploadService.saveFile(postCreateRequest.getImage());
 //        postRepository.save(postCreateRequest.toEntity(targetUser, image));
 //    }
 
+    @Transactional
     public void createPost(UUID id, PostCreateRequest postCreateRequest) {
         User targetUser = userService.checkExist(id);
         postRepository.save(postCreateRequest.toEntity(targetUser));

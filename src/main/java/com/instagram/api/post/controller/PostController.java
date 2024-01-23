@@ -30,7 +30,7 @@ public class PostController {
 //        return ResponseEntity.ok().build();
 //    }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Void> createPost(@AuthenticationPrincipal User user, @RequestBody PostCreateRequest postCreateRequest) {
         postService.createPost(UUID.fromString(user.getUsername()), postCreateRequest);
         return ResponseEntity.ok().build();
