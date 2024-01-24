@@ -4,6 +4,7 @@ import com.instagram.api.post.domain.Post;
 import com.instagram.api.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,7 +17,6 @@ import java.sql.Timestamp;
 public class Reply {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_id")
     private Long id;
 
     private String content;
@@ -32,4 +32,14 @@ public class Reply {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Builder
+    public Reply(String content, User user, Post post) {
+        this.content = content;
+        this.user = user;
+        this.post = post;
+    }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

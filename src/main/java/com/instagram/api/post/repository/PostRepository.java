@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     void deleteAllByUser(User user);
+
+    List<Post> findAllByUser(User targetUser);
 }

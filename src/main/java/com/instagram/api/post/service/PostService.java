@@ -5,7 +5,10 @@ import com.instagram.api.post.dto.request.PostCreateRequest;
 import com.instagram.api.post.dto.request.PostUpdateRequest;
 import com.instagram.api.post.dto.response.PostResponse;
 import com.instagram.api.post.repository.PostRepository;
+import com.instagram.api.reply.repository.ReplyRepository;
+import com.instagram.api.reply.service.ReplyService;
 import com.instagram.api.user.domain.User;
+import com.instagram.api.user.repository.UserRepository;
 import com.instagram.api.user.service.UserService;
 import com.instagram.api.util.S3UploadService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +25,9 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class PostService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final ReplyRepository replyRepository;
     private final S3UploadService s3UploadService;
 
     // TODO 이미지 저장 가능
@@ -36,7 +40,7 @@ public class PostService {
 
     @Transactional
     public void createPost(UUID id, PostCreateRequest postCreateRequest) {
-        User targetUser = userService.checkExist(id);
+        User targetUser = userRepository.getReferenceById(id);
         postRepository.save(postCreateRequest.toEntity(targetUser));
     }
 
@@ -45,7 +49,7 @@ public class PostService {
     }
 
     public List<PostResponse> retrievePostByFollow(UUID id) {
-        User targetUser = userService.checkExist(id);
+        User targetUser = userRepository.getReferenceById(id);
         List<User> followingList = targetUser.getFollowing();
         return postRepository.findAll()
                 .stream().filter(post -> followingList.contains(post.getUser()))
@@ -60,12 +64,22 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(UUID fromString, Long id) {
+    public void deletePost(Long id) {
         Post targetPost = checkExist(id);
         if(targetPost.getId().equals(id)) {
+            // 게시글 삭제 시 해당 게시글의 모든 댓글 제거(제거할때만 repo에서 바로 제거)
+            replyRepository.deleteAllByPost(targetPost);
             postRepository.delete(targetPost);
         }
+    }
 
+    // 사용자 탈퇴 시 해당 사용자의 모든 게시글 제거
+    @Transactional
+    public void deleteAllByUser(User targetUser) {
+        List<Post> postList = postRepository.findAllByUser(targetUser);
+        for(Post post : postList) {
+            deletePost(post.getId());
+        }
     }
 
     public Post checkExist(Long id) {

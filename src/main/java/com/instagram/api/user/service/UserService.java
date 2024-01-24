@@ -2,6 +2,10 @@ package com.instagram.api.user.service;
 
 import com.instagram.api.post.domain.Post;
 import com.instagram.api.post.repository.PostRepository;
+import com.instagram.api.post.service.PostService;
+import com.instagram.api.reply.dto.response.ReplyResponse;
+import com.instagram.api.reply.repository.ReplyRepository;
+import com.instagram.api.reply.service.ReplyService;
 import com.instagram.api.user.domain.Follow;
 import com.instagram.api.user.domain.User;
 import com.instagram.api.user.dto.request.UserUpdateRequest;
@@ -10,6 +14,7 @@ import com.instagram.api.user.repository.FollowRepository;
 import com.instagram.api.user.repository.UserRepository;
 import com.instagram.api.util.S3UploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +33,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
-    private final PostRepository postRepository;
+    private final PostService postService;
     private final S3UploadService s3UploadService;
     private final PasswordEncoder encoder;
 
@@ -61,7 +66,8 @@ public class UserService {
     public void deleteUser(UUID id) {
         User targetUser = checkExist(id);
 //        s3UploadService.deleteImage(targetUser.getFileName());
-        postRepository.deleteAllByUser(targetUser);
+//      사용자 제거 시 해당 사용자의 게시글, 댓글, 팔로우 제거(제거할때만 service를 통해 제거)
+        postService.deleteAllByUser(targetUser);
         followRepository.deleteAllByFollowerName(targetUser.getName());
         userRepository.delete(checkExist(id));
     }

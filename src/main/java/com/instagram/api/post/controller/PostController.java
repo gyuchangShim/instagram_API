@@ -4,6 +4,7 @@ import com.instagram.api.post.dto.request.PostCreateRequest;
 import com.instagram.api.post.dto.request.PostUpdateRequest;
 import com.instagram.api.post.dto.response.PostResponse;
 import com.instagram.api.post.service.PostService;
+import com.instagram.api.user.service.UserService;
 import com.instagram.api.user.state.UserAuthorize;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -55,7 +56,7 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@AuthenticationPrincipal User user, @PathVariable Long id) {
-        postService.deletePost(UUID.fromString(user.getUsername()), id);
+        postService.deletePost(id);
         return ResponseEntity.ok().build();
     }
 
