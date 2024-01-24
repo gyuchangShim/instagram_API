@@ -7,11 +7,15 @@ import com.instagram.api.user.dto.request.UserRegistRequest;
 import com.instagram.api.user.dto.response.UserLoginResponse;
 import com.instagram.api.user.repository.UserRepository;
 import com.instagram.api.util.S3UploadService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Security;
 import java.util.NoSuchElementException;
 
 @Service
@@ -43,4 +47,5 @@ public class UserSignService {
         String token = tokenProvider.createToken(String.format("%s:%s", targetUser.getId(), targetUser.getRole()));
         return new UserLoginResponse(targetUser.getName(), targetUser.getRole(), token);
     }
+
 }

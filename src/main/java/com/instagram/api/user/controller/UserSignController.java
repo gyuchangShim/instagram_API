@@ -38,13 +38,4 @@ public class UserSignController {
         return ResponseEntity.ok(userSignService.login(userLoginRequest));
     }
 
-    // TODO 로그아웃 기능 수정 필요
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
-        return ResponseEntity.ok().build();
-    }
 }

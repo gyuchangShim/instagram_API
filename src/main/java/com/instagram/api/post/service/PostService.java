@@ -59,14 +59,18 @@ public class PostService {
         targetPost.updatePost(postUpdateRequest.getContent());
     }
 
+    @Transactional
+    public void deletePost(UUID fromString, Long id) {
+        Post targetPost = checkExist(id);
+        if(targetPost.getId().equals(id)) {
+            postRepository.delete(targetPost);
+        }
+
+    }
+
     public Post checkExist(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시물이 존재하지 않습니다."));
     }
 
-
-    public void deletePost(UUID fromString, Long id) {
-        Post targetPost = checkExist(id);
-        postRepository.delete(targetPost);
-    }
 }

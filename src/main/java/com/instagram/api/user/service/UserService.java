@@ -1,5 +1,7 @@
 package com.instagram.api.user.service;
 
+import com.instagram.api.post.domain.Post;
+import com.instagram.api.post.repository.PostRepository;
 import com.instagram.api.user.domain.Follow;
 import com.instagram.api.user.domain.User;
 import com.instagram.api.user.dto.request.UserUpdateRequest;
@@ -26,6 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final PostRepository postRepository;
     private final S3UploadService s3UploadService;
     private final PasswordEncoder encoder;
 
@@ -58,6 +61,7 @@ public class UserService {
     public void deleteUser(UUID id) {
         User targetUser = checkExist(id);
 //        s3UploadService.deleteImage(targetUser.getFileName());
+        postRepository.deleteAllByUser(targetUser);
         userRepository.delete(checkExist(id));
     }
 
