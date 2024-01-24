@@ -58,27 +58,34 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(UUID fromString, PostUpdateRequest postUpdateRequest) {
+    public void updatePost(UUID id, PostUpdateRequest postUpdateRequest) {
         Post targetPost = checkExist(postUpdateRequest.getId());
+        checkProfile(targetPost, id);
         targetPost.updatePost(postUpdateRequest.getContent());
     }
 
     @Transactional
-    public void deletePost(Long id) {
-        Post targetPost = checkExist(id);
-        if(targetPost.getId().equals(id)) {
-            // 게시글 삭제 시 해당 게시글의 모든 댓글 제거(제거할때만 repo에서 바로 제거)
-            replyRepository.deleteAllByPost(targetPost);
-            postRepository.delete(targetPost);
-        }
+    public void deletePost(UUID id, Long post_id) {
+        Post targetPost = checkExist(post_id);
+        checkProfile(targetPost, id);
+        // 게시글 삭제 시 해당 게시글의 모든 댓글 제거(제거할때만 repo에서 바로 제거)
+        replyRepository.deleteAllByPost(targetPost);
+        postRepository.delete(targetPost);
     }
 
     // 사용자 탈퇴 시 해당 사용자의 모든 게시글 제거
     @Transactional
-    public void deleteAllByUser(User targetUser) {
+    public void deleteAllByUser(UUID id, User targetUser) {
         List<Post> postList = postRepository.findAllByUser(targetUser);
         for(Post post : postList) {
-            deletePost(post.getId());
+            deletePost(id, post.getId());
+        }
+    }
+
+    public void checkProfile(Post post, UUID id) {
+        User writer = userRepository.getReferenceById(id);
+        if(!post.getUser().equals(writer)) {
+             throw new IllegalArgumentException();
         }
     }
 
