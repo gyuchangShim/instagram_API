@@ -62,7 +62,33 @@ public class UserService {
         User targetUser = checkExist(id);
 //        s3UploadService.deleteImage(targetUser.getFileName());
         postRepository.deleteAllByUser(targetUser);
+        followRepository.deleteAllByFollowerName(targetUser.getName());
         userRepository.delete(checkExist(id));
+    }
+
+    @Transactional
+    public void follow(UUID fromString, String name) {
+        User me = checkExist(fromString);
+        User friend = findUser(name);
+        if(me == friend) {
+            throw new IllegalArgumentException("자기 자신은 follow할 수 없습니다.");
+        } else if(followRepository.findFollow(me.getName(), name).isPresent()) {
+            throw new IllegalArgumentException("이미 팔로우 한 대상입니다.");
+        }
+        me.updateFollow(friend);
+        friend.updateFollower(me);
+        followRepository.save(new Follow(me.getName(), friend.getName()));
+    }
+
+    @Transactional
+    public void unFollow(UUID id, String name) {
+        User me = checkExist(id);
+        User friend = findUser(name);
+        if(followRepository.findFollow(me.getName(), name).isPresent()) {
+            me.unFollow(friend);
+            friend.unFollower(me);
+            followRepository.deleteByFollowingName(name);
+        }
     }
 
     public User checkExist(UUID id) {
@@ -75,24 +101,5 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 계정입니다."));
     }
 
-    @Transactional
-    public void follow(UUID fromString, String name) {
-        User me = checkExist(fromString);
-        User friend = findUser(name);
-        if(me == friend) {
-            throw new IllegalArgumentException("자기 자신은 follow할 수 없습니다.");
-        } else if(me.getFollower().contains(friend)) {
-            throw new IllegalArgumentException("이미 팔로우 한 대상입니다.");
-        }
-        me.updateFollow(friend);
-        followRepository.save(new Follow(me.getName(), friend.getName()));
-    }
 
-    public void unFollow(UUID id, String name) {
-        User me = checkExist(id);
-//        User friend = findUser(name);
-        if(followRepository.findFollow(me.getName(), name).isPresent()) {
-            followRepository.deleteByFollowingName(name);
-        }
-    }
 }

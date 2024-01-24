@@ -1,6 +1,5 @@
 package com.instagram.api.user.domain;
 
-import com.fasterxml.uuid.Generators;
 import com.instagram.api.user.state.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -74,5 +73,17 @@ public class User {
 
     public void updateFollow(User friend) {
         this.following.add(friend);
+    }
+
+    public void updateFollower(User me) {
+        this.follower.add(me);
+    }
+
+    public void unFollow(User friend) {
+        this.following.remove(friend);
+    }
+
+    public void unFollower(User me) {
+        this.follower.remove(me);
     }
 }

@@ -18,4 +18,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     List<User> findByFollowingName(User targetUser);
 
     void deleteByFollowingName(String name);
+
+    void deleteAllByFollowerName(String name);
 }
