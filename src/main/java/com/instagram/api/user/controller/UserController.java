@@ -37,11 +37,20 @@ public class UserController {
 
     @PutMapping()
     public ResponseEntity<Void> updateUser(@AuthenticationPrincipal User user,
+                                           @Valid @RequestPart UserUpdateRequest userUpdateRequest) {
+        userService.updateUser(UUID.fromString(user.getUsername()), userUpdateRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    /*
+    // TODO Postman으로 기능 확인
+    @PutMapping()
+    public ResponseEntity<Void> updateUser(@AuthenticationPrincipal User user,
                                            @Valid @RequestPart UserUpdateRequest userUpdateRequest,
                                            @RequestPart(required = false) MultipartFile multipartFile) throws IOException {
         userService.updateUser(UUID.fromString(user.getUsername()), userUpdateRequest, multipartFile);
         return ResponseEntity.ok().build();
-    }
+    } */
 
     @DeleteMapping()
     public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal User user) {

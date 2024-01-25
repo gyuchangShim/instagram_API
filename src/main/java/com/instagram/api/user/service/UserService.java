@@ -13,6 +13,8 @@ import com.instagram.api.user.dto.response.UserResponse;
 import com.instagram.api.user.repository.FollowRepository;
 import com.instagram.api.user.repository.UserRepository;
 import com.instagram.api.util.S3UploadService;
+import com.instagram.api.util.exception.errorCode.UserErrorCode;
+import com.instagram.api.util.exception.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,6 +49,19 @@ public class UserService {
     }
 
     @Transactional
+    public UserResponse updateUser(UUID id, UserUpdateRequest userUpdateRequest) {
+        return userRepository.findById(id)
+                .filter(user -> encoder.matches(userUpdateRequest.getPw(), user.getPw()))
+                .map(user -> {
+                    user.updateUser(userUpdateRequest.getName(), userUpdateRequest.getAge(), userUpdateRequest.getPhoneNumber());
+                    return UserResponse.from(user);
+                })
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+    }
+
+    /*
+       *
+    @Transactional
     public UserResponse updateUser(UUID id, UserUpdateRequest userUpdateRequest, MultipartFile multipartFile) throws IOException {
         return userRepository.findById(id)
                 .filter(user -> encoder.matches(userUpdateRequest.getPw(), user.getPw()))
@@ -54,13 +69,15 @@ public class UserService {
                     user.updateUser(userUpdateRequest.getName(), userUpdateRequest.getAge(), userUpdateRequest.getPhoneNumber());
                     return UserResponse.from(user);
                 })
-                .orElseThrow(() -> new NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다."));
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 //        if(targetUser.getFileName() != multipartFile.getOriginalFilename()) {
 //            s3UploadService.deleteImage(targetUser.getFileName());
 //            String imageUrl = s3UploadService.saveFile(multipartFile);
 //            targetUser.updateImage(imageUrl, multipartFile.getOriginalFilename());
 //        }
     }
+
+     */
 
     @Transactional
     public void deleteUser(UUID id) {
@@ -77,9 +94,9 @@ public class UserService {
         User me = checkExist(fromString);
         User friend = findUser(name);
         if(me == friend) {
-            throw new IllegalArgumentException("자기 자신은 follow할 수 없습니다.");
+            throw new CustomException(UserErrorCode.ERROR_FOLLOW_MYSELF);
         } else if(followRepository.findFollow(me.getName(), name).isPresent()) {
-            throw new IllegalArgumentException("이미 팔로우 한 대상입니다.");
+            throw new CustomException(UserErrorCode.DUPLICATE_FOLLOW);
         }
         me.updateFollow(friend);
         friend.updateFollower(me);
@@ -99,12 +116,12 @@ public class UserService {
 
     public User checkExist(UUID id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 계정입니다."));
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
     }
 
     public User findUser(String name) {
         return userRepository.findByName(name)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 계정입니다."));
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
     }
 
 
