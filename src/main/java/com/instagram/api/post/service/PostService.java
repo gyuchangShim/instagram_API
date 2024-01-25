@@ -11,6 +11,9 @@ import com.instagram.api.user.domain.User;
 import com.instagram.api.user.repository.UserRepository;
 import com.instagram.api.user.service.UserService;
 import com.instagram.api.util.S3UploadService;
+import com.instagram.api.util.exception.errorCode.PostErrorCode;
+import com.instagram.api.util.exception.errorCode.UserErrorCode;
+import com.instagram.api.util.exception.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,13 +88,13 @@ public class PostService {
     public void checkProfile(Post post, UUID id) {
         User writer = userRepository.getReferenceById(id);
         if(!post.getUser().equals(writer)) {
-             throw new IllegalArgumentException();
+             throw new CustomException(UserErrorCode.ERROR_USER_PROFILE);
         }
     }
 
     public Post checkExist(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 게시물이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(PostErrorCode.POST_NOT_FOUND));
     }
 
 }
