@@ -1,6 +1,8 @@
 package com.instagram.api.reply.controller;
 
+import com.instagram.api.reply.domain.Reply;
 import com.instagram.api.reply.dto.request.ReplyCreateRequest;
+import com.instagram.api.reply.dto.request.ReplyToReplyRequest;
 import com.instagram.api.reply.dto.request.ReplyUpdateRequest;
 import com.instagram.api.reply.dto.response.ReplyResponse;
 import com.instagram.api.reply.service.ReplyService;
@@ -26,6 +28,13 @@ public class ReplyController {
     @PostMapping()
     public ResponseEntity<Void> createReply(@AuthenticationPrincipal User user, @RequestBody ReplyCreateRequest replyCreateRequest) {
         replyService.createReply(UUID.fromString(user.getUsername()), replyCreateRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/toReply")
+    public ResponseEntity<Void> replyToReply(@AuthenticationPrincipal User user, @RequestBody ReplyToReplyRequest replyToReplyRequest) {
+        Reply reply = replyService.checkExist(replyToReplyRequest.getParent_id());
+        replyService.replyToReply(UUID.fromString(user.getUsername()), replyToReplyRequest, reply);
         return ResponseEntity.ok().build();
     }
 

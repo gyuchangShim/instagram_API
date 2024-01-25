@@ -15,4 +15,6 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     void deleteAllByUser(User targetUser);
 
     void deleteAllByPost(Post targetPost);
+
+    void deleteAllByParent(Reply targetReply);
 }

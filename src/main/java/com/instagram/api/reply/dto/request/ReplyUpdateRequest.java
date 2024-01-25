@@ -12,9 +12,7 @@ import lombok.Getter;
 public class ReplyUpdateRequest {
 
     @NotNull
-    @Column(name = "post_id")
-    private Long id;
-
+    private Long reply_id;
     @NotBlank
     private String content;
 

@@ -32,14 +32,29 @@ public class Reply {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reply_id")
+    private Reply parent;
+
+    private int depth;
+
     @Builder
-    public Reply(String content, User user, Post post) {
+    public Reply(String content, User user, Post post, Reply reply) {
         this.content = content;
         this.user = user;
         this.post = post;
+        this.parent = reply;
     }
 
     public void update(String content) {
         this.content = content;
+    }
+
+    public void plusDepth() {
+        this.depth += 1;
+    }
+
+    public void minusDepth() {
+        this.depth -= 1;
     }
 }
