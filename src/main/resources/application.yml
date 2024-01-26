@@ -6,10 +6,10 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: 'jdbc:h2:mem:cow_insta'
+    url: ${db_url}
     driver-class-name: org.h2.Driver
-    username: cow-insta
-    password: tlarbckd@17
+    username: ${db_password}
+    password: ${db_username}
 
   h2:
     console:
