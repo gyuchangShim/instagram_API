@@ -23,6 +23,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Set YML
+        uses: microsoft/variable-substitution@v1
         with:
           files: ${{ env.RESOURCE_PATH }}
         env:
