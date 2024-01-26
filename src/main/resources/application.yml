@@ -6,10 +6,10 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: ${DB_URL}
+    url: 'jdbc:h2:mem:cow_insta'
     driver-class-name: org.h2.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: cow-insta
+    password: tlarbckd@17
 
   h2:
     console:
@@ -50,8 +50,8 @@ cloud:
       s3:
         bucket: cow-insta-practice
       credentials:
-        access-key: ${AWS_ACCESS_KEY_ID}
-        secret-key: ${AWS_SECRET_KEY}
+        access-key: AKIAQAZLIF42LFQ4P2XY
+        secret-key: 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
       region:
         static: ap-northeast-2
         auto: false

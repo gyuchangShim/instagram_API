@@ -2,21 +2,23 @@ package com.instagram.api.user.dto.response;
 
 import com.instagram.api.user.domain.User;
 import com.instagram.api.user.state.Role;
+import lombok.Builder;
 import lombok.Getter;
 
-import java.util.UUID;
-
 @Getter
+@Builder
 public class UserResponse {
 
-    private UUID id;
+    private String uid;
+    private String pw;
     private String name;
     private int age;
     private String phoneNumber;
     private Role role;
 
-    public UserResponse(UUID id, String name, int age, String phoneNumber, Role role) {
-        this.id = id;
+    public UserResponse(String uid, String pw, String name, int age, String phoneNumber, Role role) {
+        this.uid = uid;
+        this.pw = pw;
         this.name = name;
         this.age = age;
         this.phoneNumber = phoneNumber;
@@ -24,7 +26,7 @@ public class UserResponse {
     }
 
     public static UserResponse from(User user) {
-        return new UserResponse(user.getId(), user.getName(), user.getAge(), user.getPhoneNumber(), user.getRole());
+        return new UserResponse(user.getUid(), user.getPw(), user.getName(), user.getAge(), user.getPhoneNumber(), user.getRole());
     }
 
 }

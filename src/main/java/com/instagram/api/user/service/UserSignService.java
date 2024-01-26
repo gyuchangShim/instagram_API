@@ -1,5 +1,6 @@
 package com.instagram.api.user.service;
 
+import com.instagram.api.user.dto.response.UserResponse;
 import com.instagram.api.util.exception.exception.CustomException;
 import com.instagram.api.util.exception.errorCode.UserErrorCode;
 import com.instagram.api.util.jwt.TokenProvider;
@@ -31,10 +32,12 @@ public class UserSignService {
 //    }
 
     @Transactional
-    public void register(UserRegistRequest userRegistRequest) {
+    public UserResponse register(UserRegistRequest userRegistRequest) {
         String encodePw = encoder.encode(userRegistRequest.getPw());
         checkIdDuplicate(userRegistRequest);
-        userRepository.save(userRegistRequest.toEntity(encodePw));
+        User user = userRegistRequest.toEntity(encodePw);
+        userRepository.save(user);
+        return new UserResponse(user.getUid(), user.getPw(), user.getName(), user.getAge(), user.getPhoneNumber(), user.getRole());
     }
 
     public UserLoginResponse login(UserLoginRequest userLoginRequest) {

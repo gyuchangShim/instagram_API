@@ -4,9 +4,9 @@ on:
   push:
     branches: [ main ]
 
-env:
-  S3_BUCKET_NAME: cow-insta-practice
-  RESOURCE_PATH: ./src/main/resources/application.yml
+#env:
+#  S3_BUCKET_NAME: cow-insta-practice
+#  RESOURCE_PATH: ./src/main/resources/application.yml
 
 jobs:
   build:
@@ -22,16 +22,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Set YML
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.RESOURCE_PATH }}
-        env:
-          spring.datasource.url: ${{ secrets.DB_URL }}
-          spring.datasource.username: ${{ secrets.DB_USERNAME }}
-          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-          AWS.ACCESS.KEY.ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS.SECRET.KEY: ${{ secrets.AWS_SECRET_KEY }}
+#      - name: Set YML
+#        uses: microsoft/variable-substitution@v1
+#        with:
+#          files: ${{ env.RESOURCE_PATH }}
+#        env:
+#          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+#          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+#          AWS.ACCESS.KEY.ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS.SECRET.KEY: ${{ secrets.AWS_SECRET_KEY }}
 
       - name: Build with Gradle
         run: ./gradlew clean build
