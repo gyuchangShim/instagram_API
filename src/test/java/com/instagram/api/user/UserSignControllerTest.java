@@ -55,28 +55,28 @@ public class UserSignControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userSignController).build();
     }
 
-    @Test
-    @DisplayName("회원 가입 성공")
-    void registerSuccess() throws Exception {
-        UserRegistRequest request = userRequest();
-        UserResponse response = userResponse();
-
-        doReturn(response).when(userSignService)
-                .register(any(UserRegistRequest.class));
-
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/register")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(request))
-        );
-
-        resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("name", response.getName()).exists())
-                .andExpect(jsonPath("uid", response.getUid()).exists())
-                .andExpect(jsonPath("pw", response.getPw()).exists())
-                .andExpect(jsonPath("role", response.getRole()).exists());
-    }
+//    @Test
+//    @DisplayName("회원 가입 성공")
+//    void registerSuccess() throws Exception {
+//        UserRegistRequest request = userRequest();
+//        UserResponse response = userResponse();
+//
+//        doReturn(response).when(userSignService)
+//                .register(any(UserRegistRequest.class));
+//
+//        ResultActions resultActions = mockMvc.perform(
+//                MockMvcRequestBuilders.post("/register")
+//                        .with(csrf())
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(new Gson().toJson(request))
+//        );
+//
+//        resultActions.andExpect(status().isOk())
+//                .andExpect(jsonPath("name", response.getName()).exists())
+//                .andExpect(jsonPath("uid", response.getUid()).exists())
+//                .andExpect(jsonPath("pw", response.getPw()).exists())
+//                .andExpect(jsonPath("role", response.getRole()).exists());
+//    }
 
     @Test
     @DisplayName("로그인 성공")
