@@ -46,27 +46,27 @@ public class UserRegistRequest {
         this.phoneNumber = phoneNumber;
     }
 
-//    public User toEntity(String fileName, String imageUrl, String pw) {
-//        return User.builder()
-//                .uid(this.uid)
-//                .pw(pw)
-//                .name(this.name)
-//                .age(this.age)
-//                .phoneNumber(this.phoneNumber)
-//                .originalFileName(fileName)
-//                .imageUrl(imageUrl)
-//                .role(Role.USER)
-//                .build();
-//    }
-
-    public User toEntity(String pw) {
+    public User toEntity(String fileName, String imageUrl, String pw) {
         return User.builder()
                 .uid(this.uid)
                 .pw(pw)
                 .name(this.name)
                 .age(this.age)
                 .phoneNumber(this.phoneNumber)
+                .originalFileName(fileName)
+                .imageUrl(imageUrl)
                 .role(Role.USER)
                 .build();
     }
+
+//    public User toEntity(String pw) {
+//        return User.builder()
+//                .uid(this.uid)
+//                .pw(pw)
+//                .name(this.name)
+//                .age(this.age)
+//                .phoneNumber(this.phoneNumber)
+//                .role(Role.USER)
+//                .build();
+//    }
 }

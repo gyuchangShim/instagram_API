@@ -19,8 +19,8 @@ public class User {
     private String name;
     private int age;
     private String phoneNumber;
-//    private String fileName;
-//    private String imageUrl;
+    private String fileName;
+    private String imageUrl;
     @Enumerated(EnumType.STRING)
     private Role role;
     @Id @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,37 +33,37 @@ public class User {
     @JoinColumn(name = "followerName")
     private List<User> follower;
 
-//    @Builder
-//    public User(String uid, String pw, String name, int age, String phoneNumber,
-//                String originalFileName, String imageUrl, Role role) {
-//        this.uid = uid;
-//        this.pw = pw;
-//        this.name = name;
-//        this.age = age;
-//        this.phoneNumber = phoneNumber;
-//        this.fileName = originalFileName;
-//        this.imageUrl = imageUrl;
-//        this.role = role;
-//    }
-
     @Builder
-    public User(String uid, String pw, String name, int age, String phoneNumber, Role role) {
+    public User(String uid, String pw, String name, int age, String phoneNumber,
+                String originalFileName, String imageUrl, Role role) {
         this.uid = uid;
         this.pw = pw;
         this.name = name;
         this.age = age;
         this.phoneNumber = phoneNumber;
+        this.fileName = originalFileName;
+        this.imageUrl = imageUrl;
         this.role = role;
     }
+
+//    @Builder
+//    public User(String uid, String pw, String name, int age, String phoneNumber, Role role) {
+//        this.uid = uid;
+//        this.pw = pw;
+//        this.name = name;
+//        this.age = age;
+//        this.phoneNumber = phoneNumber;
+//        this.role = role;
+//    }
 
     public void addUserAuthority() {
         this.role = Role.USER;
     }
 
-//    public void updateImage(String imageUrl, String originalFileName) {
-//        this.imageUrl = imageUrl;
-//        this.fileName = originalFileName;
-//    }
+    public void updateImage(String imageUrl, String originalFileName) {
+        this.imageUrl = imageUrl;
+        this.fileName = originalFileName;
+    }
 
     public void updateUser(String name, int age, String phoneNumber) {
         this.name = name;
