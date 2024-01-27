@@ -15,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Tag(name = "USER", description = "회원가입 및 로그인 API")
+@EnableWebMvc
 @RestController
 @RequiredArgsConstructor
 public class UserSignController {
@@ -34,7 +36,7 @@ public class UserSignController {
     @Operation(summary = "회원가입")
     @ApiResponse(responseCode = "200", description = "회원가입 성공")
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody @Valid UserRegistRequest userRegistRequest) {
+    public ResponseEntity<UserResponse> register(@RequestBody UserRegistRequest userRegistRequest) {
         return ResponseEntity.ok(userSignService.register(userRegistRequest));
     }
 
