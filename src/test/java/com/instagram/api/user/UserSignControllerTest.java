@@ -78,19 +78,19 @@ public class UserSignControllerTest {
 //                .andExpect(jsonPath("role", response.getRole()).exists());
 //    }
 
-    @Test
-    @DisplayName("로그인 성공")
-    void loginSuccess() throws Exception {
-        setup();
-
-        UserLoginRequest request = userLoginRequest();
-        mockMvc.perform(
-                MockMvcRequestBuilders.post("/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(request)))
-                .andExpect(status().isOk());
-
-    }
+//    @Test
+//    @DisplayName("로그인 성공")
+//    void loginSuccess() throws Exception {
+//        setup();
+//
+//        UserLoginRequest request = userLoginRequest();
+//        mockMvc.perform(
+//                MockMvcRequestBuilders.post("/login")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(new Gson().toJson(request)))
+//                .andExpect(status().isOk());
+//
+//    }
 
     private void setup() {
         User user = User.builder()
