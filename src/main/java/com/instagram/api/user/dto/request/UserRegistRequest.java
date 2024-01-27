@@ -3,26 +3,35 @@ package com.instagram.api.user.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.instagram.api.user.domain.User;
 import com.instagram.api.user.state.Role;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
+@Schema(description = "회원가입 요청 DTO")
 @Getter
 public class UserRegistRequest {
 
+    @Schema(description = "아이디", defaultValue = "test")
     @NotBlank
     private String uid;
 
+    @Length(min = 6, max = 20)
+    @Schema(description = "비밀번호", defaultValue = "test2")
     @NotBlank
     private String pw;
 
+    @Schema(description = "이름", defaultValue = "COW")
     @NotBlank
     private String name;
 
-    @NotNull
+    @Range(min = 1, max = 99)
+    @Schema(description = "나이")
     private int age;
 
+    @Schema(description = "전화번호", example = "000-0000-0000")
     @NotBlank
     private String phoneNumber;
 
