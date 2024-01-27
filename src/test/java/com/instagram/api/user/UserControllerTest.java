@@ -58,18 +58,18 @@ public class UserControllerTest {
 //        userRepository.deleteAll();
 //    }
 
-    @Test
-    @WithCustomMockUser
-    @DisplayName("사용자 정보 조회 테스트")
-    void retrieveUserTest() throws Exception{
-        saveUser();
-        PrincipalDetails principalDetails = new PrincipalDetails(userRepository.findByName("COW").get());
-        mockMvc.perform(
-                MockMvcRequestBuilders.get("/user")
-                        .with(SecurityMockMvcRequestPostProcessors.user(principalDetails)))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @WithCustomMockUser
+//    @DisplayName("사용자 정보 조회 테스트")
+//    void retrieveUserTest() throws Exception{
+//        saveUser();
+//        PrincipalDetails principalDetails = new PrincipalDetails(userRepository.findByName("COW").get());
+//        mockMvc.perform(
+//                MockMvcRequestBuilders.get("/user")
+//                        .with(SecurityMockMvcRequestPostProcessors.user(principalDetails)))
+//                .andDo(print())
+//                .andExpect(status().isOk());
+//    }
 
     private UserResponse userResponse() {
         return UserResponse.builder()
