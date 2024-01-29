@@ -22,21 +22,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@EnableWebMvc
+//@SpringBootTest
 public class UserSignControllerTest {
 
     @Mock
@@ -48,34 +59,42 @@ public class UserSignControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
     private MockMvc mockMvc;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userSignController).build();
+//        mockMvc = MockMvcBuilders.standaloneSetup(userSignController).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
 //    @Test
 //    @DisplayName("회원 가입 성공")
 //    void registerSuccess() throws Exception {
 //        UserRegistRequest request = userRequest();
-//        UserResponse response = userResponse();
 //
-//        doReturn(response).when(userSignService)
-//                .register(any(UserRegistRequest.class));
+//        String jsonFile = mapper.writeValueAsString(request);
+//        MockMultipartFile jsonData = new MockMultipartFile("userRegistRequest",
+//                "userRegistRequest", "application/json", jsonFile.getBytes(StandardCharsets.UTF_8));
 //
-//        ResultActions resultActions = mockMvc.perform(
-//                MockMvcRequestBuilders.post("/register")
-//                        .with(csrf())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(new Gson().toJson(request))
-//        );
+//        String fileName = "TEST_IMAGE";
+//        String contentType = "png";
+//        String filePath = "src/test/resources/testImage";
 //
-//        resultActions.andExpect(status().isOk())
-//                .andExpect(jsonPath("name", response.getName()).exists())
-//                .andExpect(jsonPath("uid", response.getUid()).exists())
-//                .andExpect(jsonPath("pw", response.getPw()).exists())
-//                .andExpect(jsonPath("role", response.getRole()).exists());
+//        MockMultipartFile file = new MockMultipartFile("testImage", "testImage.png"
+//                , "image/png", "testImage".getBytes());
+//
+//        mockMvc.perform(multipart("/register")
+//                .file(file)
+//                .file(jsonData))
+//                .andDo(print())
+//                .andExpect(status().isCreated())
+//                .andReturn();
+//
 //    }
 
 //    @Test

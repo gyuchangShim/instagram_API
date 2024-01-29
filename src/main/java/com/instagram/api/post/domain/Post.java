@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -21,6 +24,9 @@ public class Post {
 
     private String content;
 //    private String image;
+
+    @CreationTimestamp
+    private Timestamp timestamp;
 
     @Builder
     public Post(User user, String content) {

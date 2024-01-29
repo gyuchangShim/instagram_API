@@ -82,7 +82,7 @@ public class UserService {
     @Transactional
     public void deleteUser(UUID id) {
         User targetUser = checkExist(id);
-//        s3UploadService.deleteImage(targetUser.getFileName());
+        s3UploadService.deleteImage(targetUser.getFileName());
 //      사용자 제거 시 해당 사용자의 게시글, 댓글, 팔로우 제거(제거할때만 service를 통해 제거)
         postService.deleteAllByUser(id, targetUser);
         followRepository.deleteAllByFollowerName(targetUser.getName());

@@ -5,11 +5,12 @@ server:
 spring:
   profiles:
     active: dev
+    include: secret
   datasource:
-    url: 'jdbc:h2:mem:${DB_URL}'
+    url: 'jdbc:h2:mem:cow_insta'
     driver-class-name: org.h2.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: cMRWdDHd8+v0P+PIFOSGSxaSCxAMgooA
+    password: 4kSLHZxUCB9mFKL3sW1/mlCC4xY76kcG
 
   h2:
     console:
@@ -50,10 +51,15 @@ cloud:
       s3:
         bucket: cow-insta-practice
       credentials:
-        access-key: ${AWS_ACCESS_KEY_ID}
-        secret-key: ${AWS_SECRET_KEY}
+        access-key: ISKR6ASbcxuyvuchyGfGC7mhHZkcOGngep30a1MiAag=
+        secret-key: RvexWcIIzftjjkj4AnqItqBSzGWkx9JwABMpGrB0KjUFQyT5LDSXMqqI/xKllR8dUk7AA2XvD84=
       region:
         static: ap-northeast-2
         auto: false
       stack:
         auto: false
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: gyu

@@ -1,12 +1,12 @@
 package com.instagram.api.util.config;
 
-import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.jasypt.encryption.StringEncryptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,9 +23,17 @@ public class S3Config {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+    final
+    StringEncryptor stringEncryptor;
+
+    public S3Config(@Qualifier("jasyptStringEncryptor") StringEncryptor stringEncryptor) {
+        this.stringEncryptor = stringEncryptor;
+    }
+
     @Bean
     public AmazonS3Client amazonS3Client() {
-        BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+        BasicAWSCredentials credentials = new BasicAWSCredentials(stringEncryptor.decrypt(accessKey),
+                stringEncryptor.decrypt(secretKey));
 
         return (AmazonS3Client) AmazonS3ClientBuilder
                 .standard()

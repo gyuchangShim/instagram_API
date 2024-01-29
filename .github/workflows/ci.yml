@@ -22,15 +22,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Set .env for configuration
-        run: |
-          touch ./.env
-          echo "DB_URL=${{ secrets.DB_URL }}" >> ./.env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> ./.env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ./.env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" ./.env
-          echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> ./.env
-        shell: bash
+      - run: touch ./src/main/resources/application-secrets.properties
+      - run: echo "${{ secrets.APPLICATION_SECRET }}" > ./src/main/resources/application-secret.properties
+      - run: cat ./src/main/resources/application-secret.properties
 
       - name: Build with Gradle
         run: ./gradlew clean build
