@@ -49,6 +49,14 @@ public class UserService {
     }
 
     @Transactional
+    public void insertProfileImage(UUID id, MultipartFile multipartFile) throws IOException {
+        String imageUrl = s3UploadService.saveFile(multipartFile);
+        User user = userRepository.getReferenceById(id);
+        user.updateImage(imageUrl, multipartFile.getOriginalFilename());
+
+    }
+
+    @Transactional
     public UserResponse updateUser(UUID id, UserUpdateRequest userUpdateRequest) {
         return userRepository.findById(id)
                 .filter(user -> encoder.matches(userUpdateRequest.getPw(), user.getPw()))
@@ -123,6 +131,5 @@ public class UserService {
         return userRepository.findByName(name)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
     }
-
 
 }

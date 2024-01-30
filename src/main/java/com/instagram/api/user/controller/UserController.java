@@ -6,15 +6,20 @@ import com.instagram.api.user.service.UserService;
 import com.instagram.api.user.state.UserAuthorize;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +44,15 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserResponse> retrieveUserByName(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(userService.retrieveUserByName(UUID.fromString(user.getUsername())));
+    }
+
+    @Operation(summary = "회원 프로필 사진 수정")
+    @ApiResponse(responseCode = "200", description = "사용자 프로필 사진 업데이트 성공")
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> insertProfileImage(@AuthenticationPrincipal User user,
+                                                   @RequestPart MultipartFile multipartFile) throws IOException {
+        userService.insertProfileImage(UUID.fromString(user.getUsername()), multipartFile);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "회원 정보 수정")

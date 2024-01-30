@@ -27,21 +27,21 @@ public class UserSignService {
     private final TokenProvider tokenProvider;
     private final BCryptPasswordEncoder encoder;
 
-    @Transactional
-    public void register(UserRegistRequest userRegistRequest, MultipartFile multipartFile) throws IOException {
-        String imageUrl = s3UploadService.saveFile(multipartFile);
-        String encodePW = encoder.encode(userRegistRequest.getPw());
-        userRepository.save(userRegistRequest.toEntity(multipartFile.getOriginalFilename(), imageUrl, encodePW));
-    }
-
 //    @Transactional
-//    public UserResponse register(UserRegistRequest userRegistRequest) {
-//        String encodePw = encoder.encode(userRegistRequest.getPw());
-//        checkIdDuplicate(userRegistRequest);
-//        User user = userRegistRequest.toEntity(encodePw);
-//        userRepository.save(user);
-//        return new UserResponse(user.getUid(), user.getPw(), user.getName(), user.getAge(), user.getPhoneNumber(), user.getRole());
+//    public void register(UserRegistRequest userRegistRequest, MultipartFile multipartFile) throws IOException {
+//        String imageUrl = s3UploadService.saveFile(multipartFile);
+//        String encodePW = encoder.encode(userRegistRequest.getPw());
+//        userRepository.save(userRegistRequest.toEntity(multipartFile.getOriginalFilename(), imageUrl, encodePW));
 //    }
+
+    @Transactional
+    public UserResponse register(UserRegistRequest userRegistRequest) {
+        String encodePw = encoder.encode(userRegistRequest.getPw());
+        checkIdDuplicate(userRegistRequest);
+        User user = userRegistRequest.toEntity(null, null, encodePw);
+        userRepository.save(user);
+        return new UserResponse(user.getUid(), user.getPw(), user.getName(), user.getAge(), user.getPhoneNumber(), user.getRole());
+    }
 
     public UserLoginResponse login(UserLoginRequest userLoginRequest) {
         User targetUser = userRepository.findByUid(userLoginRequest.getUid())

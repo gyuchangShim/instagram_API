@@ -31,21 +31,21 @@ public class UserSignController {
     private final UserSignService userSignService;
 
     // TODO DTO + MultipartFile은 Swagger에서 확인 불가 -> Postman으로 임시 조치(첫번째 피드백에서 질문 예정)
-    @Operation(summary = "회원가입")
-    @ApiResponse(responseCode = "200", description = "회원가입 성공")
-    @PostMapping()
-    public ResponseEntity<Void> register(@RequestPart UserRegistRequest userRegistRequest,
-                                         @RequestPart MultipartFile multipartFile) throws IOException {
-        userSignService.register(userRegistRequest, multipartFile);
-        return ResponseEntity.ok().build();
-    }
-
 //    @Operation(summary = "회원가입")
 //    @ApiResponse(responseCode = "200", description = "회원가입 성공")
-//    @PostMapping("/register")
-//    public ResponseEntity<UserResponse> register(@RequestBody UserRegistRequest userRegistRequest) {
-//        return ResponseEntity.ok(userSignService.register(userRegistRequest));
+//    @PostMapping()
+//    public ResponseEntity<Void> register(@RequestPart UserRegistRequest userRegistRequest,
+//                                         @RequestPart MultipartFile multipartFile) throws IOException {
+//        userSignService.register(userRegistRequest, multipartFile);
+//        return ResponseEntity.ok().build();
 //    }
+
+    @Operation(summary = "회원가입")
+    @ApiResponse(responseCode = "200", description = "회원가입 성공")
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(@RequestBody UserRegistRequest userRegistRequest) {
+        return ResponseEntity.ok(userSignService.register(userRegistRequest));
+    }
 
     @Operation(summary = "로그인")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "로그인 성공")
