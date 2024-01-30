@@ -63,10 +63,16 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
         run: |
-          aws deploy create-deployment 
-          --application-name [cow_insta]
-          --deployment-group-name [cow_insta-group]
-          --file-exists-behavior OVERWRITE
-          --s3-location bucket=cow-insta-practice, bundleType=zip, key=insta.zip
+          aws deploy create-deployment \
+          --application-name cow_insta[cow_insta] \
+          --deployment-group-name cow_insta-group[cow_insta-group] \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=cow-insta-deploy[cow-insta-practice],bundleType=zip,key=cow-insta.zip[insta] \
           --region ap-northeast-2
-
+#        |
+#          aws deploy create-deployment
+#          --application-name [cow_insta]
+#          --deployment-group-name [cow_insta-group]
+#          --file-exists-behavior OVERWRITE
+#          --s3-location bucket=cow-insta-practice, bundleType=zip, key=insta.zip
+#          --region ap-northeast-2
