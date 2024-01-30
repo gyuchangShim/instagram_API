@@ -35,6 +35,15 @@ jobs:
       - name: Make Directory
         run: cp ./build/libs/*.jar ./deploy
 
+      - name: Copy Jar
+        run: cp ./build/libs/*.jar ./deploy
+
+      - name: Copy appspec.yml
+        run: cp appspec.yml ./deploy
+
+      - name: Copy script
+        run: cp ./scripts/*.sh ./deploy
+
       - name: Make zip file
         run: zip -r ./insta.zip ./deploy
         shell: bash
@@ -48,3 +57,16 @@ jobs:
 
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./insta.zip s3://$S3_BUCKET_NAME/
+
+      - name: Deploy
+        env:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        run:
+          aws deploy create-deployment 
+          --application-name cow_insta[cow_insta]
+          --deployment-group-name cow_insta-group[cow_insta-group]
+          --file-exists-behavior OVERWRITE
+          --s3-location bucket=cow_insta-deploy[cow-insta-practice],bundleType=zip,key=insta.zip[insta.zip]
+          --region ap-northeast-2
+
