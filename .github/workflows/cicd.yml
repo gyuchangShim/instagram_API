@@ -67,6 +67,6 @@ jobs:
           --application-name cow_insta[cow_insta]
           --deployment-group-name cow_insta-group[cow_insta-group]
           --file-exists-behavior OVERWRITE
-          --s3-location bucket=cow_insta-deploy[cow-insta-practice] bundleType=zip key=insta.zip[insta.zip]
+          --s3-location bucket=cow_insta-deploy[cow-insta-practice], bundleType=zip, key=insta.zip[insta.zip]
           --region ap-northeast-2
 
