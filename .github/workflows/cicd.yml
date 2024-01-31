@@ -33,19 +33,19 @@ jobs:
         run: ./gradlew build jacocoTestReport
 
       - name: Make Directory
-        run: cp ./build/libs/*.jar ./deploy
+        run: mkdir cicd
 
       - name: Copy Jar
-        run: cp ./build/libs/*.jar ./deploy
+        run: cp ./build/libs/*.jar ./cicd
 
       - name: Copy appspec.yml
-        run: cp appspec.yml ./deploy
+        run: cp appspec.yml ./cicd
 
       - name: Copy script
-        run: cp ./scripts/*.sh ./deploy
+        run: cp deploy.sh ./cicd
 
       - name: Make zip file
-        run: zip -r ./insta.zip ./deploy
+        run: zip -r ./insta.zip ./cicd
         shell: bash
 
       - name: Configure AWS credentials
