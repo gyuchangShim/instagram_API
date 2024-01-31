@@ -43,11 +43,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @EnableWebMvc
-//@SpringBootTest
+@SpringBootTest
 public class UserSignControllerTest {
 
     @Mock
@@ -59,57 +60,39 @@ public class UserSignControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
     private MockMvc mockMvc;
-
-    private ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void init() {
-//        mockMvc = MockMvcBuilders.standaloneSetup(userSignController).build();
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(userSignController).build();
     }
 
-//    @Test
-//    @DisplayName("회원 가입 성공")
-//    void registerSuccess() throws Exception {
-//        UserRegistRequest request = userRequest();
-//
-//        String jsonFile = mapper.writeValueAsString(request);
-//        MockMultipartFile jsonData = new MockMultipartFile("userRegistRequest",
-//                "userRegistRequest", "application/json", jsonFile.getBytes(StandardCharsets.UTF_8));
-//
-//        String fileName = "TEST_IMAGE";
-//        String contentType = "png";
-//        String filePath = "src/test/resources/testImage";
-//
-//        MockMultipartFile file = new MockMultipartFile("testImage", "testImage.png"
-//                , "image/png", "testImage".getBytes());
-//
-//        mockMvc.perform(multipart("/register")
-//                .file(file)
-//                .file(jsonData))
-//                .andDo(print())
-//                .andExpect(status().isCreated())
-//                .andReturn();
-//
-//    }
+    @Test
+    @DisplayName("회원 가입 성공")
+    void registerSuccess() throws Exception {
+        UserRegistRequest request = userRequest();
 
-//    @Test
-//    @DisplayName("로그인 성공")
-//    void loginSuccess() throws Exception {
-//        setup();
-//
-//        UserLoginRequest request = userLoginRequest();
-//        mockMvc.perform(
-//                MockMvcRequestBuilders.post("/login")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(new Gson().toJson(request)))
-//                .andExpect(status().isOk());
-//
-//    }
+        mockMvc.perform(post("/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(request)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("로그인 성공")
+    void loginSuccess() throws Exception {
+        setup();
+
+        UserLoginRequest request = userLoginRequest();
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(request)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
 
     private void setup() {
         User user = User.builder()
@@ -137,17 +120,6 @@ public class UserSignControllerTest {
         return UserLoginRequest.builder()
                 .uid("test")
                 .pw("test2")
-                .build();
-    }
-
-    private UserResponse userResponse() {
-        return UserResponse.builder()
-                .uid("test")
-                .pw("test2")
-                .name("COW")
-                .age(25)
-                .phoneNumber("000-0000-0000")
-                .role(Role.USER)
                 .build();
     }
 
