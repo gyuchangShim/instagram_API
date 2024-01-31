@@ -4,10 +4,8 @@ import com.instagram.api.post.domain.Post;
 import com.instagram.api.reply.domain.Reply;
 import com.instagram.api.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 

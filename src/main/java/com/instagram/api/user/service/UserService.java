@@ -1,11 +1,6 @@
 package com.instagram.api.user.service;
 
-import com.instagram.api.post.domain.Post;
-import com.instagram.api.post.repository.PostRepository;
 import com.instagram.api.post.service.PostService;
-import com.instagram.api.reply.dto.response.ReplyResponse;
-import com.instagram.api.reply.repository.ReplyRepository;
-import com.instagram.api.reply.service.ReplyService;
 import com.instagram.api.user.domain.Follow;
 import com.instagram.api.user.domain.User;
 import com.instagram.api.user.dto.request.UserUpdateRequest;
@@ -16,7 +11,6 @@ import com.instagram.api.util.S3UploadService;
 import com.instagram.api.util.exception.errorCode.UserErrorCode;
 import com.instagram.api.util.exception.exception.CustomException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

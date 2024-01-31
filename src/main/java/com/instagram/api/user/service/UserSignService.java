@@ -14,25 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class UserSignService {
 
     private final UserRepository userRepository;
-    private final S3UploadService s3UploadService;
     private final TokenProvider tokenProvider;
     private final BCryptPasswordEncoder encoder;
-
-//    @Transactional
-//    public void register(UserRegistRequest userRegistRequest, MultipartFile multipartFile) throws IOException {
-//        String imageUrl = s3UploadService.saveFile(multipartFile);
-//        String encodePW = encoder.encode(userRegistRequest.getPw());
-//        userRepository.save(userRegistRequest.toEntity(multipartFile.getOriginalFilename(), imageUrl, encodePW));
-//    }
 
     @Transactional
     public UserResponse register(UserRegistRequest userRegistRequest) {

@@ -2,7 +2,6 @@ package com.instagram.api.reply.service;
 
 import com.instagram.api.post.domain.Post;
 import com.instagram.api.post.repository.PostRepository;
-import com.instagram.api.post.service.PostService;
 import com.instagram.api.reply.domain.Reply;
 import com.instagram.api.reply.dto.request.ReplyCreateRequest;
 import com.instagram.api.reply.dto.request.ReplyToReplyRequest;
@@ -10,7 +9,6 @@ import com.instagram.api.reply.dto.request.ReplyUpdateRequest;
 import com.instagram.api.reply.dto.response.ReplyResponse;
 import com.instagram.api.reply.repository.ReplyRepository;
 import com.instagram.api.user.domain.User;
-import com.instagram.api.user.repository.UserRepository;
 import com.instagram.api.user.service.UserService;
 import com.instagram.api.util.exception.errorCode.ReplyErrorCode;
 import com.instagram.api.util.exception.exception.CustomException;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

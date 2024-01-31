@@ -1,15 +1,10 @@
 package com.instagram.api.reply.dto.response;
 
-import com.instagram.api.post.domain.Post;
 import com.instagram.api.reply.domain.Reply;
-import com.instagram.api.user.domain.User;
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
 public class ReplyResponse {
-
 
     private Long id;
 

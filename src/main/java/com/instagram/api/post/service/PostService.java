@@ -6,10 +6,8 @@ import com.instagram.api.post.dto.request.PostUpdateRequest;
 import com.instagram.api.post.dto.response.PostResponse;
 import com.instagram.api.post.repository.PostRepository;
 import com.instagram.api.reply.repository.ReplyRepository;
-import com.instagram.api.reply.service.ReplyService;
 import com.instagram.api.user.domain.User;
 import com.instagram.api.user.repository.UserRepository;
-import com.instagram.api.user.service.UserService;
 import com.instagram.api.util.S3UploadService;
 import com.instagram.api.util.exception.errorCode.PostErrorCode;
 import com.instagram.api.util.exception.errorCode.UserErrorCode;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

@@ -1,6 +1,5 @@
 package com.instagram.api.util.jwt;
 
-import com.instagram.api.user.domain.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

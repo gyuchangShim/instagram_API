@@ -46,16 +46,6 @@ public class User {
         this.role = role;
     }
 
-//    @Builder
-//    public User(String uid, String pw, String name, int age, String phoneNumber, Role role) {
-//        this.uid = uid;
-//        this.pw = pw;
-//        this.name = name;
-//        this.age = age;
-//        this.phoneNumber = phoneNumber;
-//        this.role = role;
-//    }
-
     public void addUserAuthority() {
         this.role = Role.USER;
     }
